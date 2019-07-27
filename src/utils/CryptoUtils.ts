@@ -75,9 +75,15 @@ export namespace CryptoUtils {
      * @param seed 
      */
     export async function generateKeys(seed: Buffer) {
+        if (seed.toString('hex').length !== 32) {
+          throw new Error('Please ensure your seed is 32 bytes')
+        }
         const k = await wrapper.keys(seed);
 
-        return { privateKey: k.privateKey, publicKey: k.publicKey };
+        let privateKey = new Buffer(k.privateKey).toString('hex')
+        let publicKey = new Buffer(k.publicKey).toString('hex')
+
+        return { privateKey: privateKey, publicKey: publicKey };
     }
 
     /**
